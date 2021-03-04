@@ -10,11 +10,11 @@ const int ACCESSED = 4096;
 
 struct SoA {
     vector<int> x, y, z, w;
-    SoA() : x(SIZE), y(SIZE), z(SIZE), w(SIZE) {}
+    SoA() : x(SIZE_), y(SIZE_), z(SIZE_), w(SIZE_) {}
 };
 
 void soa_scan(struct SoA &array, int stride) {
-    for (int i = 0; i < SIZE_; i += stride)
+    for (int i = 0; i < SIZE; i += stride)
         array.x[i] = array.x[i] + array.y[i] << array.z[i];
 }
 
@@ -25,15 +25,14 @@ static void CustomArguments(benchmark::internal::Benchmark* b) {
 
 void soa_scan_bench(benchmark::State& state) {
     SoA soa = SoA();
-    for (int i = 0; i < SIZE; i++) {
+    for (int i = 0; i < SIZE_; i++) {
         soa.x[i] = i;
         soa.y[i] = -i;
-        soa.z[i] = SIZE - i;
-        soa.w[i] = i - SIZE;
-//        cout << "Array initialized!" << endl;
+        soa.z[i] = SIZE_ - i;
+        soa.w[i] = i - SIZE_;
     }
+    SIZE = state.range(1);
     for (auto _ : state) {
-        SIZE_ = state.range(1);
         soa_scan(soa, state.range(0));
     }
 }

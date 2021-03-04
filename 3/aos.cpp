@@ -28,8 +28,8 @@ void aos_scan_bench(benchmark::State& state) {
         aos[i].z = SIZE - i;
         aos[i].w = i - SIZE;
     }
+    SIZE = state.range(1);
     for (auto _ : state) {
-        SIZE = state.range(1);
         aos_scan(aos, state.range(0));
     }
 }
